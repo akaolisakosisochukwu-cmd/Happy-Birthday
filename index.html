@@ -1,316 +1,509 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, My Odogwu</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <style>
-        :root {
-            --bg-color: #0b0c10;
-            --card-bg: rgba(255, 255, 255, 0.04);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --accent-gold: #e2b714;
-            --text-main: #f0f0f0;
-            --text-muted: #a0a0a0;
+
+```
+<title>Happy Birthday, My Odogwu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+    :root {
+        --bg-color: #0b0c10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --accent-gold: #e2b714;
+        --text-main: #f0f0f0;
+        --text-muted: #a0a0a0;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow-x: hidden;
+    }
+
+    /* Lock Screen */
+    .lock-container {
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        padding: 40px 25px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        transition: all 0.5s ease;
+    }
+
+    .lock-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+
+    .hint-text {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+
+    .hint-tooltip {
+        font-style: italic;
+        color: var(--accent-gold);
+        margin-top: 5px;
+        font-size: 0.85rem;
+        display: block;
+    }
+
+    .passcode-input {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--card-border);
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        font-size: 1rem;
+        text-align: center;
+        outline: none;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+    }
+
+    .passcode-input:focus {
+        border-color: var(--accent-gold);
+    }
+
+    .unlock-btn {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        border: none;
+        background: var(--accent-gold);
+        color: #000;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .unlock-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .error-msg {
+        color: #ff5f5f;
+        font-size: 0.85rem;
+        margin-top: 10px;
+        display: none;
+    }
+
+    /* Main Dashboard */
+    .dashboard {
+        display: none;
+        max-width: 650px;
+        width: 100%;
+        animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-        }
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
 
-        /* Lock Screen */
-        .lock-container {
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 40px 25px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            transition: all 0.5s ease;
-        }
+    .header h1 {
+        font-family: 'Caveat', cursive;
+        font-size: 3.5rem;
+        color: var(--accent-gold);
+        margin-bottom: 5px;
+    }
 
-        .lock-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
+    .header p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+    }
 
-        .hint-text {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
+    /* Audio Controls */
+    .audio-section {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
 
-        .hint-tooltip {
-            font-style: italic;
-            color: var(--accent-gold);
-            margin-top: 5px;
-            font-size: 0.85rem;
-            display: block;
-        }
+    .audio-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        color: var(--text-main);
+    }
 
-        .passcode-input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid var(--card-border);
-            background: rgba(0, 0, 0, 0.4);
-            color: #fff;
-            font-size: 1rem;
-            text-align: center;
-            outline: none;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-        }
+    .audio-box {
+        margin-bottom: 20px;
+    }
 
-        .passcode-input:focus {
-            border-color: var(--accent-gold);
-        }
+    .audio-box:last-child {
+        margin-bottom: 0;
+    }
 
-        .unlock-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: none;
-            background: var(--accent-gold);
-            color: #000;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    .audio-box p {
+        font-size: 0.9rem;
+        color: var(--accent-gold);
+        margin-bottom: 8px;
+    }
 
-        .unlock-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
+    audio {
+        width: 100%;
+        height: 35px;
+        border-radius: 20px;
+    }
 
-        .error-msg {
-            color: #ff5f5f;
-            font-size: 0.85rem;
-            margin-top: 10px;
-            display: none;
-        }
+    /* GIF / Video Showcase Grid */
+    .gif-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
 
-        /* Main Dashboard */
-        .dashboard {
-            display: none;
-            max-width: 650px;
-            width: 100%;
-            animation: fadeIn 1s ease forwards;
-        }
+    .gif-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        overflow: hidden;
+        aspect-ratio: 1 / 1;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .gif-card video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+    /* Handwritten Letter */
+    .letter-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 30px;
+        line-height: 1.8;
+        font-family: 'Caveat', cursive;
+        font-size: 1.6rem;
+        color: #f5f5f5;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
 
-        .header h1 {
-            font-family: 'Caveat', cursive;
-            font-size: 3.5rem;
-            color: var(--accent-gold);
-            margin-bottom: 5px;
-        }
+    .letter-card p {
+        margin-bottom: 20px;
+    }
 
-        .header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
+    .sign-off {
+        text-align: right;
+        margin-top: 30px;
+        color: var(--accent-gold);
+    }
+</style>
+```
 
-        /* Audio Controls */
-        .audio-section {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .audio-section h3 {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            color: var(--text-main);
-        }
-
-        .audio-box {
-            margin-bottom: 15px;
-        }
-
-        .audio-box p {
-            font-size: 0.9rem;
-            color: var(--accent-gold);
-            margin-bottom: 5px;
-        }
-
-        audio {
-            width: 100%;
-            height: 35px;
-            border-radius: 20px;
-        }
-
-        /* GIF Showcase Grid */
-        .gif-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .gif-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
-        }
-
-        .gif-card video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Handwritten Letter */
-        .letter-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 30px;
-            line-height: 1.8;
-            font-family: 'Caveat', cursive;
-            font-size: 1.6rem;
-            color: #f5f5f5;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .letter-card p {
-            margin-bottom: 20px;
-        }
-
-        .sign-off {
-            text-align: right;
-            margin-top: 30px;
-            color: var(--accent-gold);
-        }
-    </style>
 </head>
+
 <body>
 
-    <div class="lock-container" id="lockScreen">
-        <div class="lock-icon">🔒</div>
-        <h2>A Secret for You</h2>
-        <p class="hint-text">Enter the passcode to unlock.<br>
-            <span class="hint-tooltip">Hint: your favourite part of my body</span>
+```
+<!-- LOCK SCREEN -->
+<div class="lock-container" id="lockScreen">
+
+    <div class="lock-icon">🔒</div>
+
+    <h2>A Secret for You</h2>
+
+    <p class="hint-text">
+        Enter the passcode to unlock.
+        <br>
+        <span class="hint-tooltip">
+            Hint: your favourite part of my body
+        </span>
+    </p>
+
+    <input
+        type="password"
+        id="passcodeInput"
+        class="passcode-input"
+        placeholder="••••••"
+    >
+
+    <button class="unlock-btn" onclick="checkCode()">
+        Unlock My Heart
+    </button>
+
+    <p class="error-msg" id="errorMsg">
+        Incorrect passcode. Try again!
+    </p>
+
+</div>
+
+
+<!-- MAIN WEBSITE -->
+<div class="dashboard" id="dashboard">
+
+    <header class="header">
+        <h1>Happy Birthday, My Odogwu</h1>
+        <p>Debe deee mi • September 10th</p>
+    </header>
+
+
+    <!-- AUDIO SECTION -->
+    <div class="audio-section">
+
+        <h3>Press to Listen 🎵</h3>
+
+        <!-- BACKGROUND SONG -->
+        <div class="audio-box">
+            <p>Background Song: Ordinary - Alex Warren</p>
+
+            <audio
+                id="bgSong"
+                src="ordinary.mp3"
+                loop
+                preload="auto">
+            </audio>
+        </div>
+
+
+        <!-- VOICE NOTE 1 -->
+        <div class="audio-box">
+            <p>🎙️ Voice Note I: Midnight Kiss</p>
+
+            <audio
+                controls
+                preload="metadata"
+                src="voice1.mp3">
+            </audio>
+        </div>
+
+
+        <!-- VOICE NOTE 2 -->
+        <div class="audio-box">
+            <p>🎙️ Voice Note II: All My Love</p>
+
+            <audio
+                controls
+                preload="metadata"
+                src="voice2.mp3">
+            </audio>
+        </div>
+
+    </div>
+
+
+    <!-- GIF / VIDEO SECTION -->
+    <div class="gif-grid">
+
+        <div class="gif-card">
+            <video autoplay loop muted playsinline preload="auto">
+                <source src="video1.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="gif-card">
+            <video autoplay loop muted playsinline preload="auto">
+                <source src="video2.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="gif-card">
+            <video autoplay loop muted playsinline preload="auto">
+                <source src="video3.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="gif-card">
+            <video autoplay loop muted playsinline preload="auto">
+                <source src="video4.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="gif-card">
+            <video autoplay loop muted playsinline preload="auto">
+                <source src="video5.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="gif-card">
+            <video autoplay loop muted playsinline preload="auto">
+                <source src="video6.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="gif-card">
+            <video autoplay loop muted playsinline preload="auto">
+                <source src="video7.mp4" type="video/mp4">
+            </video>
+        </div>
+
+    </div>
+
+
+    <!-- LOVE LETTER -->
+    <div class="letter-card">
+
+        <p>
+            You are the constant thought that anchors my world,
+            especially when the distance feels like it is building
+            a bridge too long to cross. There are so many things
+            I cherish about you, but on this day, the anniversary
+            of the first breath you took, my heart overflows with
+            gratitude that you simply exist.
         </p>
-        <input type="password" id="passcodeInput" class="passcode-input" placeholder="••••••">
-        <button class="unlock-btn" onclick="checkCode()">Unlock My Heart</button>
-        <p class="error-msg" id="errorMsg">Incorrect passcode. Try again!</p>
+
+        <p>
+            Your strength makes me feel safe. Your mind challenges
+            mine. Your tenderness is a sanctuary I never knew I
+            needed. Every laugh we share is a song that stays with me,
+            and every glance we give through a screen is a promise
+            I know we will keep.
+        </p>
+
+        <p>
+            I wish I could gift you the entire world today. I would
+            wrap up every ocean that separates us, and give you the
+            shortest path back to me. Until then, my love, I hope
+            this little place, a reflection of everything you mean
+            to me, keeps you warm until my arms finally can.
+            All I want is for you to feel celebrated, seen, and
+            utterly adored, today and forever. You are my home,
+            my peace, and my greatest adventure. I love you,
+            so, so much.
+        </p>
+
+        <div class="sign-off">
+            <p>Forever Yours ❤️</p>
+        </div>
+
     </div>
 
-    <div class="dashboard" id="dashboard">
-        <header class="header">
-            <h1>Happy Birthday, My Odogwu</h1>
-            <p>Debe deee mi • September 10th</p>
-        </header>
+</div>
 
-        <div class="audio-section">
-            <h3>Press to Listen 🎵</h3>
-            
-            <div class="audio-box">
-                <p>Background Song: Ordinary - Alex Warren</p>
-                <audio controls id="bgSong" src="ordinary.mp3"></audio>
-            </div>
 
-            <div class="audio-box">
-                <p>Voice Note I: Midnight Kiss</p>
-                <audio controls src="voice1.mp3"></audio>
-            </div>
+<script>
 
-            <div class="audio-box">
-                <p>Voice Note II: All My Love</p>
-                <audio controls src="voice2.mp3"></audio>
-            </div>
-        </div>
+    function checkCode() {
 
-        <div class="gif-grid">
-            <div class="gif-card"><video autoplay loop muted playsinline src="video1.mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline src="video2.mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline src="video3.mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline src="video4.mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline src="video5.mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline src="video6.mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline src="video7.mp4"></video></div>
-        </div>
+        const input =
+            document.getElementById('passcodeInput')
+            .value
+            .trim()
+            .toLowerCase();
 
-        <div class="letter-card">
-            <p>You are the constant thought that anchors my world, especially when the distance feels like it is building a bridge too long to cross. There are so many things I cherish about you, but on this day, the anniversary of the first breath you took, my heart overflows with gratitude that you simply exist.</p>
-            
-            <p>Your strength makes me feel safe. Your mind challenges mine. Your tenderness is a sanctuary I never knew I needed. Every laugh we share is a song that stays with me, and every glance we give through a screen is a promise I know we will keep.</p>
-            
-            <p>I wish I could gift you the entire world today. I would wrap up every ocean that separates us, and give you the shortest path back to me. Until then, my love, I hope this little place, a reflection of everything you mean to me, keeps you warm until my arms finally can. All I want is for you to feel celebrated, seen, and utterly adored, today and forever. You are my home, my peace, and my greatest adventure. I love you, so, so much.</p>
+        const errorMsg =
+            document.getElementById('errorMsg');
 
-            <div class="sign-off">
-                <p>Forever Yours ❤️</p>
-            </div>
-        </div>
-    </div>
+        const lockScreen =
+            document.getElementById('lockScreen');
 
-    <script>
-        function checkCode() {
-            const input = document.getElementById('passcodeInput').value.trim().toLowerCase();
-            const errorMsg = document.getElementById('errorMsg');
-            
-            if (input === 'kinky') {
-                document.getElementById('lockScreen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                
-                // Play background song upon unlock
-                const bgSong = document.getElementById('bgSong');
-                if (bgSong) {
-                    bgSong.volume = 0.3;
-                    bgSong.play().catch(e => console.log("Autoplay prevented"));
-                }
+        const dashboard =
+            document.getElementById('dashboard');
 
-                // Trigger Confetti
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
+        const bgSong =
+            document.getElementById('bgSong');
+
+
+        if (input === 'kinky') {
+
+            /* Hide lock screen */
+            lockScreen.style.display = 'none';
+
+            /* Show birthday website */
+            dashboard.style.display = 'block';
+
+
+            /* Start background music */
+            bgSong.volume = 0.3;
+
+            bgSong.play()
+                .then(() => {
+                    console.log("Background music started.");
+                })
+                .catch((error) => {
+
+                    console.log(
+                        "Music could not autoplay:",
+                        error
+                    );
+
+                    /*
+                     If the browser blocks playback,
+                     the music will need to be started
+                     after another user interaction.
+                    */
                 });
-            } else {
-                errorMsg.style.display = 'block';
-            }
+
+
+            /* Birthday confetti */
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: {
+                    y: 0.6
+                }
+            });
+
+        } else {
+
+            errorMsg.style.display = 'block';
+
         }
 
-        document.getElementById('passcodeInput').addEventListener('keypress', function (e) {
+    }
+
+
+    /* Allow Enter key to unlock */
+
+    document
+        .getElementById('passcodeInput')
+        .addEventListener('keypress', function(e) {
+
             if (e.key === 'Enter') {
                 checkCode();
             }
+
         });
-    </script>
+
+</script>
+```
+
 </body>
 </html>
