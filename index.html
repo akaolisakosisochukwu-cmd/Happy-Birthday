@@ -241,24 +241,29 @@
             <h3>Press to Listen 🎵</h3>
             
             <div class="audio-box">
+                <p>Background Song: Ordinary - Alex Warren</p>
+                <audio controls id="bgSong" src="ordinary.mp3"></audio>
+            </div>
+
+            <div class="audio-box">
                 <p>Voice Note I: Midnight Kiss</p>
-                <audio controls crossorigin="anonymous" src="https://media1.vocaroo.com/mp3/1fe8N9QdBgN9"></audio>
+                <audio controls src="voice1.mp3"></audio>
             </div>
 
             <div class="audio-box">
                 <p>Voice Note II: All My Love</p>
-                <audio controls crossorigin="anonymous" src="https://media1.vocaroo.com/mp3/13tWx2KGUxVX"></audio>
+                <audio controls src="voice2.mp3"></audio>
             </div>
         </div>
 
         <div class="gif-grid">
-            <div class="gif-card"><video autoplay loop muted playsinline><source src="https://v.imgur.com/Q6cejqy.mp4" type="video/mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline><source src="https://v.imgur.com/AR7D1sl.mp4" type="video/mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline><source src="https://v.imgur.com/lpL9Rcg.mp4" type="video/mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline><source src="https://v.imgur.com/xw2N0wz.mp4" type="video/mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline><source src="https://v.imgur.com/6UhcuAj.mp4" type="video/mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline><source src="https://v.imgur.com/s24lW0Y.mp4" type="video/mp4"></video></div>
-            <div class="gif-card"><video autoplay loop muted playsinline><source src="https://v.imgur.com/NzwgFxn.mp4" type="video/mp4"></video></div>
+            <div class="gif-card"><video autoplay loop muted playsinline src="video1.mp4"></video></div>
+            <div class="gif-card"><video autoplay loop muted playsinline src="video2.mp4"></video></div>
+            <div class="gif-card"><video autoplay loop muted playsinline src="video3.mp4"></video></div>
+            <div class="gif-card"><video autoplay loop muted playsinline src="video4.mp4"></video></div>
+            <div class="gif-card"><video autoplay loop muted playsinline src="video5.mp4"></video></div>
+            <div class="gif-card"><video autoplay loop muted playsinline src="video6.mp4"></video></div>
+            <div class="gif-card"><video autoplay loop muted playsinline src="video7.mp4"></video></div>
         </div>
 
         <div class="letter-card">
@@ -283,6 +288,13 @@
                 document.getElementById('lockScreen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 
+                // Play background song upon unlock
+                const bgSong = document.getElementById('bgSong');
+                if (bgSong) {
+                    bgSong.volume = 0.3;
+                    bgSong.play().catch(e => console.log("Autoplay prevented"));
+                }
+
                 // Trigger Confetti
                 confetti({
                     particleCount: 100,
@@ -294,7 +306,6 @@
             }
         }
 
-        // Allow pressing Enter key to submit
         document.getElementById('passcodeInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 checkCode();
